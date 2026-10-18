@@ -17,7 +17,7 @@ pnpm --version
 pnpm install --frozen-lockfile
 ```
 
-扩展运行时只有原生 JavaScript；`fflate` 用于开发阶段打包，Playwright 用于浏览器验证，两者都不会进入安装目录或 ZIP。
+扩展运行时只有原生 JavaScript；`sharp` 将 SVG 源图标导出为四种尺寸的 PNG，`fflate` 用于打包，Playwright 用于浏览器验证。这些开发依赖不会进入安装目录或 ZIP。
 
 ## 日常开发
 
@@ -26,6 +26,8 @@ pnpm install --frozen-lockfile
 3. 修改 `src/content/index.js` 中的按钮与跳转逻辑，或 `public/manifest.json` 中的扩展配置。
 4. 保存后等待终端输出 `Built dist/`，然后在扩展管理页重新加载扩展，刷新源站。
 5. 结束开发时用 `Ctrl+C` 停止监听。
+
+图标源文件为 `src/assets/icon.svg`，沿用 Gallery Lens 的深绿色背景、奶白色 E 字形与珊瑚色，并加入桥形。E 字形已转为路径，不依赖构建机器上的字体；修改 SVG 后，构建会自动生成 `dist/icons/` 中的四种 PNG。
 
 `dev` 监听 `src/`、`public/` 和 `package.json`。修改测试或脚本后需自行重新执行相应命令。构建会重建 `dist/`，请修改源码，不要直接修改生成文件。
 
@@ -79,4 +81,4 @@ pnpm run test:browser
 3. 需要检查浏览器交互时，另行执行 `pnpm run test:browser`；浏览器测试不包含在常规 `verify` 中。
 4. 分发 `release/gallery-lens-bridger-<版本>.zip`，或将 `dist/` 用作本地安装目录。
 
-ZIP 根目录直接包含 `manifest.json`、`content.js`，解压后即可加载。打包不会上传扩展商店或执行外部发布。
+ZIP 根目录直接包含 `manifest.json`、`content.js` 和 `icons/`，解压后即可加载。打包不会上传扩展商店或执行外部发布。

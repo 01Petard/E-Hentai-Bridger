@@ -63,6 +63,12 @@ test('manifest restricts automatic injection to the two HTTPS source sites and t
   const manifest = JSON.parse(fs.readFileSync(path.join(projectRoot, 'public/manifest.json'), 'utf8'));
   assert.equal(manifest.manifest_version, 3);
   assert.equal(manifest.name, 'Gallery Lens Bridger');
+  assert.deepEqual(manifest.icons, {
+    '16': 'icons/16.png',
+    '32': 'icons/32.png',
+    '48': 'icons/48.png',
+    '128': 'icons/128.png',
+  });
   assert.equal(manifest.content_scripts.length, 1);
   const script = manifest.content_scripts[0];
   assert.deepEqual(script.matches, ['https://e-hentai.org/*', 'https://exhentai.org/*']);

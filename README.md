@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="src/assets/icon.svg" width="80" height="80" alt="Gallery Lens Bridger 标志">
   <h1>Gallery Lens Bridger</h1>
   <p><strong>从源站出发，在 Gallery Lens 继续浏览。</strong></p>
   <p>面向 Chrome / Edge 的轻量扩展，为 E-Hentai / ExHentai 添加一键跳转按钮。</p>
@@ -7,6 +8,10 @@
     <a href="#开始使用">使用</a> ·
     <a href="#目录结构">目录结构</a> ·
     <a href="#开发与验证">开发</a>
+  </p>
+  <p>
+    <a href="https://github.com/01Petard/E-Hentai-Bridger">GitHub</a> ·
+    <a href="https://github.com/01Petard/E-Hentai-Fetcher">配套客户端</a>
   </p>
 </div>
 
@@ -17,7 +22,7 @@
 - 完整保留当前源站 URL，包括搜索条件与分页参数。
 - 在新标签页打开目标，保留当前页面；支持 Tab、Enter 与空格操作。
 
-当前版本 **1.0.0**。目标实例为 [e-gallery.bugstack.top](https://e-gallery.bugstack.top/)。
+当前版本 **1.0.0**。目标实例为 [Gallery Lens](https://e-gallery.bugstack.top/)。
 
 ## 安装与更新
 
@@ -65,7 +70,9 @@ pnpm run verify
 
 ```text
 E-hentai Bridger/
-├── src/content/index.js       # 内容脚本源码：地址判断、按钮、跳转
+├── src/
+│   ├── content/index.js       # 内容脚本源码：地址判断、按钮、跳转
+│   └── assets/icon.svg        # 延续 Gallery Lens 的 E 字形与配色，加入桥形
 ├── public/manifest.json       # 扩展名称、版本与站点匹配配置
 ├── scripts/
 │   ├── build.mjs              # 清理构建、监听源码变更
@@ -81,7 +88,8 @@ E-hentai Bridger/
 │   └── verification.md        # 验证结果与边界
 ├── dist/                     # 构建生成；浏览器加载此目录
 │   ├── manifest.json
-│   └── content.js
+│   ├── content.js
+│   └── icons/                # 构建生成的 16 / 32 / 48 / 128px PNG
 ├── release/                  # 打包生成；ZIP 内直接包含运行文件
 │   └── gallery-lens-bridger-1.0.0.zip
 ├── output/playwright/        # 浏览器验证结果与截图

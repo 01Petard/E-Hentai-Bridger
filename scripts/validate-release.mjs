@@ -2,13 +2,15 @@ import assert from 'node:assert/strict';
 import {readFile, readdir} from 'node:fs/promises';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import sharp from 'sharp';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = join(root, 'dist');
 const pkg = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 const manifest = JSON.parse(await readFile(join(dist, 'manifest.json'), 'utf8'));
 
-assert.deepEqual((await readdir(dist)).sort(), ['content.js', 'manifest.json'], 'dist 只能包含扩展运行文件');
+assert.deepEqual((await readdir(dist)).sort(), ['content.js', 'icons', 'manifest.json'], 'dist 只能包含扩展运行文件');
+assert.deepEqual((await readdir(join(dist, 'icons'))).sort(), ['128.png', '16.png', '32.png', '48.png']);
 assert.equal(manifest.manifest_version, 3);
 assert.equal(manifest.name, 'Gallery Lens Bridger');
 assert.equal(manifest.version, pkg.version, '发布版本与 package.json 不一致');
@@ -22,6 +24,14 @@ for (const key of ['permissions', 'host_permissions', 'optional_permissions', 'o
 }
 assert.equal(manifest.background, undefined);
 assert.equal(manifest.action, undefined);
+assert.deepEqual(manifest.icons, {'16': 'icons/16.png', '32': 'icons/32.png', '48': 'icons/48.png', '128': 'icons/128.png'});
+for (const size of [16, 32, 48, 128]) {
+  const metadata = await sharp(await readFile(join(dist, manifest.icons[size]))).metadata();
+  assert.equal(metadata.format, 'png');
+  assert.equal(metadata.width, size, `图标宽度应为 ${size}px`);
+  assert.equal(metadata.height, size, `图标高度应为 ${size}px`);
+  assert.equal(metadata.hasAlpha, true);
+}
 assert.deepEqual(await readFile(join(dist, 'manifest.json')), await readFile(join(root, 'public/manifest.json')), 'Manifest 已更改，请重新构建');
 assert.deepEqual(await readFile(join(dist, 'content.js')), await readFile(join(root, 'src/content/index.js')), '内容脚本已更改，请重新构建');
 console.log('Release validation passed');

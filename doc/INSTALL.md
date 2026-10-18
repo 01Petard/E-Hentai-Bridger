@@ -7,12 +7,17 @@
 | 完整源码项目 | 执行构建后生成的 `dist/` |
 | `gallery-lens-bridger-1.0.0.zip` | 解压后直接包含 `manifest.json` 的目录 |
 
-安装目录的完整结构只有两个运行文件：
+安装目录的完整结构如下：
 
 ```text
 安装目录/
 ├── manifest.json
-└── content.js
+├── content.js
+└── icons/
+    ├── 16.png
+    ├── 32.png
+    ├── 48.png
+    └── 128.png
 ```
 
 浏览器会持续读取这个目录。安装后请保留目录，不要直接从临时解压目录或 ZIP 预览界面加载。

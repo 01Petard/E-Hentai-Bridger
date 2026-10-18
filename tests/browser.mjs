@@ -29,7 +29,7 @@ try {
     viewport: {width: 1280, height: 800},
   });
   const session = await context.browser().newBrowserCDPSession();
-  await session.send('Extensions.loadUnpacked', {path: join(root, 'dist')});
+  const {id} = await session.send('Extensions.loadUnpacked', {path: join(root, 'dist')});
   await session.detach();
 
   // Keep the release manifest unchanged; only network responses use controlled test HTML.
@@ -99,6 +99,12 @@ try {
     assert.equal(await page.locator('#gallery-lens-bridger').count(), 0);
     check(`No injection: ${source}`);
   }
+  await context.unroute('**/*');
+  await page.goto(`chrome-extension://${id}/icons/128.png`);
+  const icon = page.locator('img');
+  await icon.waitFor();
+  assert.deepEqual(await icon.evaluate(image => [image.naturalWidth, image.naturalHeight]), [128, 128]);
+  check('Extension icon: 128px PNG loads in the browser');
   assert.deepEqual(errors, []);
   const {version} = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
   const result = {date: new Date().toISOString(), version, browser: context.browser().version(), controlledDocuments: true, passed: checks.length, checks};

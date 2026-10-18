@@ -3,6 +3,7 @@ import {cp, mkdir, readFile, rm} from 'node:fs/promises';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {Script} from 'node:vm';
+import sharp from 'sharp';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = join(root, 'dist');
@@ -17,6 +18,11 @@ async function build() {
   await mkdir(dist, {recursive: true});
   await cp(join(root, 'public'), dist, {recursive: true});
   await cp(join(root, 'src/content/index.js'), join(dist, 'content.js'));
+  await mkdir(join(dist, 'icons'), {recursive: true});
+  const icon = await readFile(join(root, 'src/assets/icon.svg'));
+  for (const size of [16, 32, 48, 128]) {
+    await sharp(icon).resize(size, size).png().toFile(join(dist, `icons/${size}.png`));
+  }
   console.log(`Built dist/ — Gallery Lens Bridger ${pkg.version}`);
 }
 
