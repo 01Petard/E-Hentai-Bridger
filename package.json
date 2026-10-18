@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "node scripts/build.mjs --watch",
-    "lint": "node --check src/content/index.js",
+    "lint": "node --check src/content/index.js && node --check src/content/results.js",
     "test": "node --test tests/*.test.cjs tests/*.test.mjs",
     "test:browser": "pnpm run build && node tests/browser.mjs",
     "build": "node scripts/build.mjs",

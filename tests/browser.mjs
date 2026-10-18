@@ -4,6 +4,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {chromium} from 'playwright';
+import {verifyResults} from './results-browser.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = join(root, 'output/playwright');
@@ -121,6 +122,7 @@ try {
     assert.equal(await page.locator('#gallery-lens-bridger').count(), 0);
     check(`No injection: ${source}`);
   }
+  await verifyResults({context, page, extensionId: id, root, output, label, check});
   await context.unroute(fixtureUrls);
   await page.goto(`chrome-extension://${id}/icons/128.png`);
   const icon = page.locator('img');

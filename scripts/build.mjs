@@ -13,11 +13,13 @@ async function build() {
   const manifest = JSON.parse(await readFile(join(root, 'public/manifest.json'), 'utf8'));
   if (manifest.version !== pkg.version) throw new Error('package.json 与 public/manifest.json 的版本不一致');
   new Script(await readFile(join(root, 'src/content/index.js'), 'utf8'), {filename: 'content.js'});
+  new Script(await readFile(join(root, 'src/content/results.js'), 'utf8'), {filename: 'results.js'});
 
   await rm(dist, {recursive: true, force: true});
   await mkdir(dist, {recursive: true});
   await cp(join(root, 'public'), dist, {recursive: true});
   await cp(join(root, 'src/content/index.js'), join(dist, 'content.js'));
+  for (const name of ['results.js', 'results.css']) await cp(join(root, 'src/content', name), join(dist, name));
   await mkdir(join(dist, 'icons'), {recursive: true});
   const icon = await readFile(join(root, 'src/assets/icon.svg'));
   for (const size of [16, 32, 48, 128]) {

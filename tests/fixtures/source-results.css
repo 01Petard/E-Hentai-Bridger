@@ -1,0 +1,37 @@
+/* Controlled source-style baseline, including the supplied HTML's inline size constraints.
+   This is a test fixture, not a snapshot of the live upstream stylesheet. */
+body { margin: 0; background: #e3e0d1; color: #3f3928; font: 14px Arial, sans-serif; }
+.ido { margin: 24px auto; padding: 20px; width: calc(100% - 88px); max-width: 1400px; background: #f2f0e4; }
+a { color: inherit; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.itc { margin: auto; }
+#searchbox { width: max-content; max-width: 100%; margin: auto; }
+.searchnav { display: flex; position: relative; align-items: center; justify-content: center; gap: 18px; min-height: 24px; margin: 20px 0; }
+.searchnav > div:last-child { position: absolute; right: 0; padding-right: 9px; }
+.searchnav > div:empty, ins { display: none; }
+/* Upstream g.css rules that also reach extension controls and category badges. */
+.searchnav div > span { color: #ccc; }
+.itg { width: 100%; max-width: 1180px; padding: 3px; border-collapse: collapse; border: 1px solid #c3bfae; }
+.itg > tbody > tr > td { border-bottom: 1px solid #c3bfae; padding: 8px; vertical-align: top; }
+.gl1e > div { overflow: hidden; position: relative; margin: auto; }
+.gl1e img { position: relative; }
+.gl2e > div { position: relative; }
+.gl3e { float: right; width: 135px; text-align: center; }
+.gl3e > div { margin: 6px 0; }
+.gl3e > div:nth-child(5) { position: absolute; top: 130px; left: 3px; width: 120px; }
+.gl4e { margin-right: 150px; border-left: 1px solid #d9d7cc; }
+.gl4e > div { min-width: 200px; max-width: 898px; }
+.gl4e > div:nth-child(2) { padding: 4px 4px 4px 6px; }
+.glink { font-size: 14px; font-weight: bold; padding-bottom: 8px; }
+.gt, .gtl { display: inline-block; margin: 2px; padding: 2px 5px; border: 1px solid #bfbba9; border-radius: 5px; font-size: 12px; }
+.gt, .gtl { float: left; font-weight: bold; }
+.gtl { border-style: dashed; }
+.tc { white-space: nowrap; vertical-align: top; padding-top: 5px; }
+.ir { width: 80px; height: 16px; margin: auto; background-image: url(https://ehgt.org/g/rt.png); }
+.cn { user-select: none; display: inline-block; text-align: center; vertical-align: middle; white-space: nowrap; height: 35px; line-height: 35px; font-size: 9pt; border-radius: .1875rem; color: #f1f1f1; box-shadow: 0 1px 3px rgba(0, 0, 0, .3); text-shadow: 2px 2px 3px rgba(0, 0, 0, .3); width: 108px; letter-spacing: 1px; font-weight: bold; cursor: pointer; background: #76503d; }
+.ct1 { background: #767676; } .ct2 { background: #994e4e; } .cta { background: #7a6b36; }
+.gldown img { width: 16px; height: 16px; }
+html[data-test-dark] body { background: #1f1f1f; color: #ddd; }
+html[data-test-dark] .ido { background: #343434; }
+html[data-test-dark] .itg { border-color: #666; }
+html[data-test-dark] .gt, html[data-test-dark] .gtl { border-color: #777; }

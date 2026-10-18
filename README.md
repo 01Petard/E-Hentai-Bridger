@@ -19,7 +19,19 @@
 
 E-Hentai Bridger 围绕 E-Hentai / ExHentai 的实际使用场景，为源站页面提供轻量的体验增强与快捷操作，减少浏览中的重复步骤，让常用操作更顺手。
 
-Gallery Lens 快捷跳转是当前已实现的一项增强功能。后续功能同样以改善 E 站浏览体验为出发点，按实际需求逐步完善。
+目前提供 Extended 查询结果浏览增强和 Gallery Lens 快捷跳转，两项功能独立工作。
+
+## 当前功能：Extended 结果浏览增强
+
+- 根据 `table.itg.glte` 及结果行结构识别页面，适用于搜索、标签、上传者及其他路径，首页存在相同结果结构时也会生效。
+- 每次打开页面都从紧凑封面网格开始，标题位于封面上方，分类、评分、时间和页数排列在下方；网格不显示标签和上传者。
+- 列表按分类、时间评分、标题标签、上传者页数分列，不直接显示封面。鼠标悬浮标题或用键盘聚焦标题链接可预览封面；移开、按 Escape、滚动或切换布局时关闭预览。
+- 保留原站搜索筛选、统计、分页、收藏、评分、上传者链接与种子弹窗。勾选「显示原内容」立即恢复原站结果布局。
+- 增强开关保存在扩展本地存储，E-Hentai / ExHentai 共用；当前页重新开启会恢复本页选择的布局，刷新或打开其他页面则从网格开始。
+
+控件优先放在搜索区右侧、原站显示模式下拉框上方，不占用结果区域的独立整行；右侧空间不足时，收为分页上方的紧凑一行。
+
+仅增强 Extended 结果，不自动切换源站显示模式；无结果或无法识别的结构保持原样。首版在完整页面加载时初始化。
 
 ## 当前功能：Gallery Lens 快捷入口
 
@@ -68,7 +80,7 @@ pnpm run verify
 
 带搜索参数的首页可以跳转。完整源站 URL 通过 `encodeURIComponent` 编码一次，不切换 E-Hentai / ExHentai 域名。
 
-扩展根据当前地址生成链接，不读取或传递 Cookie、账号信息，不包含后台服务或工具栏操作面板。
+快捷入口根据当前地址生成链接；结果增强读取当前页已有的结果节点。扩展不读取或传递 Cookie、账号信息，不包含后台服务或浏览器工具栏面板。`storage` 权限仅用于保存增强开关，不保存搜索记录或画廊数据。
 
 **接收端限制：**计划阶段核对的 Gallery Lens 首页只接收上传者形式的 `url` 参数，普通搜索地址可能不会自动恢复查询。扩展仍会完整传递约定链接；接收端适配另行处理。
 
@@ -77,7 +89,9 @@ pnpm run verify
 ```text
 E-hentai Bridger/
 ├── src/
-│   ├── content/index.js       # 内容脚本源码：地址判断、按钮、跳转
+│   ├── content/index.js       # 地址判断、按钮、跳转
+│   ├── content/results.js     # Extended 识别、布局与偏好
+│   ├── content/results.css    # 限定在增强结果和控件内的样式
 │   └── assets/icon.svg        # E 字形与桥形扩展图标
 ├── public/manifest.json       # 扩展名称、版本与站点匹配配置
 ├── scripts/
@@ -87,7 +101,8 @@ E-hentai Bridger/
 ├── tests/
 │   ├── bridger.test.cjs       # 跳转规则与站点限制
 │   ├── release.test.mjs       # 构建、发布校验和 ZIP 内容
-│   └── browser.mjs            # 加载 dist 的浏览器验收
+│   ├── browser.mjs            # 加载 dist 的浏览器验收
+│   └── results-browser.mjs    # 使用三个 HTML 示例验证结果增强
 ├── doc/
 │   ├── INSTALL.md             # 安装、更新、卸载与排错
 │   ├── DEVELOPMENT.md         # 环境、命令与开发流程
@@ -95,6 +110,8 @@ E-hentai Bridger/
 ├── dist/                     # 构建生成；浏览器加载此目录
 │   ├── manifest.json
 │   ├── content.js
+│   ├── results.js
+│   ├── results.css
 │   └── icons/                # 构建生成的 16 / 32 / 48 / 128px PNG
 ├── release/                  # 打包生成；ZIP 内直接包含运行文件
 │   └── e-hentai-bridger-1.0.0.zip

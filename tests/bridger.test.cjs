@@ -77,8 +77,10 @@ test('manifest restricts automatic injection to the two HTTPS source sites and t
   assert.equal(script.run_at, 'document_idle');
   assert.ok(!script.match_about_blank);
   assert.ok(!script.match_origin_as_fallback);
-  assert.deepEqual(script.js, ['content.js']);
-  for (const key of ['permissions', 'host_permissions', 'optional_permissions', 'optional_host_permissions']) {
+  assert.deepEqual(script.js, ['content.js', 'results.js']);
+  assert.deepEqual(script.css, ['results.css']);
+  assert.deepEqual(manifest.permissions, ['storage']);
+  for (const key of ['host_permissions', 'optional_permissions', 'optional_host_permissions']) {
     assert.equal(manifest[key]?.length || 0, 0);
   }
   assert.equal(manifest.background, undefined);

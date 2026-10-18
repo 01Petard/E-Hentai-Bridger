@@ -23,7 +23,7 @@ pnpm install --frozen-lockfile
 
 1. 执行 `pnpm run dev`，完成首次构建并保持文件监听。
 2. 按[安装引导](INSTALL.md)在浏览器加载 `dist/`。
-3. 修改 `src/content/index.js` 中的按钮与跳转逻辑，或 `public/manifest.json` 中的扩展配置。
+3. 按功能修改 `src/content/index.js` 的按钮与跳转，或 `src/content/results.js` / `results.css` 的结果增强；扩展配置位于 `public/manifest.json`。
 4. 保存后等待终端输出 `Built dist/`，然后在扩展管理页重新加载扩展，刷新源站。
 5. 结束开发时用 `Ctrl+C` 停止监听。
 
@@ -43,7 +43,7 @@ pnpm install --frozen-lockfile
 | `pnpm run test:browser` | 构建后加载真实扩展进行浏览器验证 | `output/playwright/` |
 | `pnpm run package` | 完整验证后打包 | `release/e-hentai-bridger-<版本>.zip` |
 
-`verify` 检查 Manifest 与项目版本一致、站点范围没有扩大、没有新增权限、运行文件与当前源码一致，且安装目录中仅存在运行文件。测试还会解压 ZIP，逐文件比对 `dist/`。
+`verify` 检查 Manifest 与项目版本一致、站点范围没有扩大、权限仅包含用于偏好保存的 `storage`、运行文件与当前源码一致，且安装目录中仅存在运行文件。测试还会解压 ZIP，逐文件比对 `dist/`。
 
 ## 浏览器验证
 
@@ -74,6 +74,8 @@ pnpm run test:browser
 
 测试在两个源站域名及其他对照域名下返回受控 HTML，检查真实注入、样式隔离、紧凑尺寸、默认半透明与悬停/键盘聚焦状态、首页跳转、新标签页 URL 和站点限制。**不访问真实源站内容，不验证账号、网络可达性或 Gallery Lens 接收端查询业务。**结果保存为 `results-chromium.json` 或 `results-edge.json`，截图保存为 `button-<标签>.png` 和 `button-idle-<标签>.png`；测试结束自动关闭浏览器并清理临时配置。
 
+结果增强复用 `doc/adapt-html/` 的三个 HTML 示例，使用固定的代表性源站样式和占位封面，隔离远程脚本、广告与内容图片。检查紧凑网格、无封面列表、标题悬浮／聚焦预览、长标签、原节点恢复、原站操作、两个源站共用偏好、存储失败、非 Extended、未知结构和 iframe；结果截图为 `results-grid/list/preview/dark/narrow-<标签>.png`。固定测试样式并非线上 `g.css` 快照，不替代登录源站上的手工兼容性检查。
+
 ## 版本与打包
 
 1. 同时更新 `package.json`、`public/manifest.json` 的版本，并同步 README 中的示例版本。
@@ -81,4 +83,4 @@ pnpm run test:browser
 3. 需要检查浏览器交互时，另行执行 `pnpm run test:browser`；浏览器测试不包含在常规 `verify` 中。
 4. 分发 `release/e-hentai-bridger-<版本>.zip`，或将 `dist/` 用作本地安装目录。
 
-ZIP 根目录直接包含 `manifest.json`、`content.js` 和 `icons/`，解压后即可加载。打包不会上传扩展商店或执行外部发布。
+ZIP 根目录直接包含 `manifest.json`、`content.js`、`results.js`、`results.css` 和 `icons/`，解压后即可加载。打包不会上传扩展商店或执行外部发布。
