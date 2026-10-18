@@ -1,0 +1,115 @@
+<div align="center">
+  <h1>Gallery Lens Bridger</h1>
+  <p><strong>从源站出发，在 Gallery Lens 继续浏览。</strong></p>
+  <p>面向 Chrome / Edge 的轻量扩展，为 E-Hentai / ExHentai 添加一键跳转按钮。</p>
+  <p>
+    <a href="#安装与更新">安装</a> ·
+    <a href="#开始使用">使用</a> ·
+    <a href="#目录结构">目录结构</a> ·
+    <a href="#开发与验证">开发</a>
+  </p>
+</div>
+
+## 你可以用它做什么
+
+- 在 E-Hentai / ExHentai 页面右上角显示「在 Gallery Lens 中打开」按钮。
+- 画廊页跳转到 Gallery Lens 详情页，其他页面传入 Gallery Lens 首页。
+- 完整保留当前源站 URL，包括搜索条件与分页参数。
+- 在新标签页打开目标，保留当前页面；支持 Tab、Enter 与空格操作。
+
+当前版本 **1.0.0**。目标实例为 [e-gallery.bugstack.top](https://e-gallery.bugstack.top/)。
+
+## 安装与更新
+
+### 直接安装发布包
+
+1. 获取 `release/gallery-lens-bridger-1.0.0.zip`，解压到一个长期保留的目录。
+2. 打开 `chrome://extensions/` 或 `edge://extensions/`，开启「开发者模式」。
+3. 选择「加载已解压的扩展」，加载**解压后直接包含 `manifest.json` 的目录**。
+4. 刷新已打开的 E-Hentai / ExHentai 页面。
+
+使用发布包不需要 Node.js 或 pnpm；浏览器不能通过此安装方式直接加载 ZIP。
+
+### 从源码安装
+
+准备 **Node.js 24+、pnpm 10.34.6**，在项目目录执行：
+
+```sh
+pnpm install --frozen-lockfile
+pnpm run verify
+```
+
+随后按上面的浏览器步骤加载本项目的 **`dist/`**。项目根目录、`src/` 和 `public/` 用于开发，均不是完整安装目录。
+
+更新源码后重新构建，再在扩展管理页点击 Gallery Lens Bridger 的「重新加载」，最后刷新源站页面。此前从项目根目录安装的版本，请移除旧条目并改为加载 `dist/`。
+
+详细步骤及常见问题见[安装与更新引导](doc/INSTALL.md)。
+
+## 开始使用
+
+扩展只在 `https://e-hentai.org/*` 和 `https://exhentai.org/*` 的顶层页面工作。按钮固定在右上角，距顶部、右侧各 16px。
+
+| 源站页面 | 按钮行为 |
+| --- | --- |
+| 两个源站的纯首页 | 置灰禁用，提示「首页无需跳转」 |
+| 路径以 `/g/` 开头 | 打开 `https://e-gallery.bugstack.top/gallery?url=...` |
+| 搜索、上传者及其他页面 | 打开 `https://e-gallery.bugstack.top/?url=...` |
+
+带搜索参数的首页可以跳转。完整源站 URL 通过 `encodeURIComponent` 编码一次，不切换 E-Hentai / ExHentai 域名。
+
+扩展根据当前地址生成链接，不读取或传递 Cookie、账号信息，不包含后台服务或工具栏操作面板。
+
+**接收端限制：**计划阶段核对的 Gallery Lens 首页只接收上传者形式的 `url` 参数，普通搜索地址可能不会自动恢复查询。扩展仍会完整传递约定链接；接收端适配另行处理。
+
+## 目录结构
+
+```text
+E-hentai Bridger/
+├── src/content/index.js       # 内容脚本源码：地址判断、按钮、跳转
+├── public/manifest.json       # 扩展名称、版本与站点匹配配置
+├── scripts/
+│   ├── build.mjs              # 清理构建、监听源码变更
+│   ├── validate-release.mjs   # 检查安装目录、版本和运行文件
+│   └── package-release.mjs    # 生成带版本号的 ZIP
+├── tests/
+│   ├── bridger.test.cjs       # 跳转规则与站点限制
+│   ├── release.test.mjs       # 构建、发布校验和 ZIP 内容
+│   └── browser.mjs            # 加载 dist 的浏览器验收
+├── doc/
+│   ├── INSTALL.md             # 安装、更新、卸载与排错
+│   ├── DEVELOPMENT.md         # 环境、命令与开发流程
+│   └── verification.md        # 验证结果与边界
+├── dist/                     # 构建生成；浏览器加载此目录
+│   ├── manifest.json
+│   └── content.js
+├── release/                  # 打包生成；ZIP 内直接包含运行文件
+│   └── gallery-lens-bridger-1.0.0.zip
+├── output/playwright/        # 浏览器验证结果与截图
+├── .nvmrc                    # Node.js 24
+├── package.json
+└── pnpm-lock.yaml
+```
+
+`dist/`、`release/`、`output/` 和 `node_modules/` 均为生成目录，不进入版本管理。ZIP 仅打包 `dist/` 的运行文件。
+
+## 开发与验证
+
+```sh
+pnpm run dev           # 首次构建，并监听源码与 Manifest 变更
+pnpm run lint          # 内容脚本语法检查
+pnpm test              # Node 内置测试
+pnpm run build         # 生成干净的 dist/
+pnpm run verify        # 语法、测试、构建和发布目录检查
+pnpm run package       # 完整验证后生成 release/*.zip
+```
+
+开发时在浏览器加载 `dist/`，保存文件后等待终端显示 `Built dist/`，再重新加载扩展并刷新源站。`dev` 是文件监听构建，不启动网页预览服务器，也不会自动刷新浏览器。
+
+真实浏览器测试使用独立临时配置，加载实际 `dist/`，在匹配域名下返回受控 HTML：
+
+```sh
+pnpm exec playwright install chromium
+pnpm run test:browser
+```
+
+完整环境准备、Edge 验证及版本更新流程见[开发引导](doc/DEVELOPMENT.md)。验证范围见[验证记录](doc/verification.md)。

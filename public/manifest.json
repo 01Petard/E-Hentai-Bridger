@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Gallery Lens Bridger",
+  "version": "1.0.0",
+  "description": "从 E-Hentai / ExHentai 一键打开对应的 Gallery Lens 页面。",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://e-hentai.org/*",
+        "https://exhentai.org/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}

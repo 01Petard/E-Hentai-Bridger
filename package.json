@@ -1,0 +1,25 @@
+{
+  "name": "gallery-lens-bridger",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Open E-Hentai and ExHentai pages in Gallery Lens",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=10 <11"
+  },
+  "scripts": {
+    "dev": "node scripts/build.mjs --watch",
+    "lint": "node --check src/content/index.js",
+    "test": "node --test tests/*.test.cjs tests/*.test.mjs",
+    "test:browser": "pnpm run build && node tests/browser.mjs",
+    "build": "node scripts/build.mjs",
+    "verify": "pnpm run lint && pnpm test && pnpm run build && node scripts/validate-release.mjs",
+    "package": "pnpm run verify && node scripts/package-release.mjs"
+  },
+  "devDependencies": {
+    "fflate": "0.8.3",
+    "playwright": "1.64.0"
+  },
+  "packageManager": "pnpm@10.34.6"
+}
