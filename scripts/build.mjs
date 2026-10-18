@@ -23,7 +23,7 @@ async function build() {
   for (const size of [16, 32, 48, 128]) {
     await sharp(icon).resize(size, size).png().toFile(join(dist, `icons/${size}.png`));
   }
-  console.log(`Built dist/ — Gallery Lens Bridger ${pkg.version}`);
+  console.log(`Built dist/ — E-Hentai Bridger ${pkg.version}`);
 }
 
 await build();

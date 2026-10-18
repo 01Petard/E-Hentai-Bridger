@@ -1,14 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Gallery Lens Bridger",
+  "name": "E-Hentai Bridger",
   "version": "1.0.0",
-  "description": "从 E-Hentai / ExHentai 一键打开对应的 Gallery Lens 页面。",
+  "description": "增强 E-Hentai / ExHentai 的浏览体验，提供轻量的页面增强与快捷操作。",
   "icons": {
     "16": "icons/16.png",
     "32": "icons/32.png",
     "48": "icons/48.png",
     "128": "icons/128.png"
   },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/128.png"],
+      "matches": ["https://e-hentai.org/*", "https://exhentai.org/*"]
+    }
+  ],
   "content_scripts": [
     {
       "matches": [

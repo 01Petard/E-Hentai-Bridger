@@ -64,6 +64,11 @@ test('release validation rejects stale builds, unexpected files, changed permiss
       manifest.permissions = ['tabs'];
       await writeFile(join(root, 'dist/manifest.json'), JSON.stringify(manifest));
     }],
+    ['broader icon access', async () => {
+      const manifest = JSON.parse(await readFile(join(root, 'dist/manifest.json'), 'utf8'));
+      manifest.web_accessible_resources[0].matches.push('https://example.com/*');
+      await writeFile(join(root, 'dist/manifest.json'), JSON.stringify(manifest));
+    }],
     ['wrong version', async () => {
       const manifest = JSON.parse(await readFile(join(root, 'dist/manifest.json'), 'utf8'));
       manifest.version = '9.9.9';
@@ -83,7 +88,7 @@ test('the versioned ZIP extracts directly to an installable extension and matche
   run(root, 'build.mjs');
   run(root, 'package-release.mjs');
   const {version} = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
-  const files = unzipSync(await readFile(join(root, 'release', `gallery-lens-bridger-${version}.zip`)));
+  const files = unzipSync(await readFile(join(root, 'release', `e-hentai-bridger-${version}.zip`)));
   assert.deepEqual(Object.keys(files).sort(), ['content.js', 'icons/128.png', 'icons/16.png', 'icons/32.png', 'icons/48.png', 'manifest.json']);
   for (const [name, content] of Object.entries(files)) {
     assert.deepEqual(Buffer.from(content), await readFile(join(root, 'dist', name)));

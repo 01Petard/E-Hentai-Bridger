@@ -45,7 +45,8 @@ function loadBridger(href, {inFrame = false} = {}) {
   };
   window.top = inFrame ? {} : window;
   window.self = window;
-  const context = vm.createContext({document, window, URL});
+  const chrome = {runtime: {getURL: resource => `chrome-extension://bridger-test/${resource}`}};
+  const context = vm.createContext({document, window, URL, chrome});
   const source = fs.readFileSync(path.join(projectRoot, 'src/content/index.js'), 'utf8');
   const run = () => vm.runInContext(source, context, {filename: 'content.js'});
   run();
@@ -62,7 +63,7 @@ function loadBridger(href, {inFrame = false} = {}) {
 test('manifest restricts automatic injection to the two HTTPS source sites and the top frame', () => {
   const manifest = JSON.parse(fs.readFileSync(path.join(projectRoot, 'public/manifest.json'), 'utf8'));
   assert.equal(manifest.manifest_version, 3);
-  assert.equal(manifest.name, 'Gallery Lens Bridger');
+  assert.equal(manifest.name, 'E-Hentai Bridger');
   assert.deepEqual(manifest.icons, {
     '16': 'icons/16.png',
     '32': 'icons/32.png',
@@ -82,16 +83,31 @@ test('manifest restricts automatic injection to the two HTTPS source sites and t
   }
   assert.equal(manifest.background, undefined);
   assert.equal(manifest.action, undefined);
+  assert.deepEqual(manifest.web_accessible_resources, [{
+    resources: ['icons/128.png'],
+    matches: ['https://e-hentai.org/*', 'https://exhentai.org/*'],
+  }]);
+});
+
+test('the button displays the packaged project icon with an accessible name and no visible text', () => {
+  const bridger = loadBridger('https://exhentai.org/');
+  const icon = bridger.button.children.find(element => element.tagName === 'img');
+  assert.ok(icon);
+  assert.equal(icon.src, 'chrome-extension://bridger-test/icons/128.png');
+  assert.equal(icon.alt, '');
+  assert.equal(bridger.button.textContent || '', '');
+  assert.equal(bridger.button['aria-label'], '在 Gallery Lens 中打开');
+  assert.equal(bridger.button.title, '在新标签页中打开 Gallery Lens');
 });
 
 for (const host of ['e-hentai.org', 'exhentai.org']) {
-  test(`${host}: plain homepage shows a disabled button and cannot open a tab`, () => {
+  test(`${host}: plain homepage opens the Gallery Lens homepage without a source parameter`, () => {
     const bridger = loadBridger(`https://${host}/`);
     assert.ok(bridger.button);
-    assert.equal(bridger.button.disabled, true);
-    assert.equal(bridger.button.title, '首页无需跳转');
+    assert.equal(bridger.button.disabled, false);
+    assert.equal(bridger.button.title, '在新标签页中打开 Gallery Lens');
     bridger.button.dispatchEvent(new Event('click'));
-    assert.equal(bridger.opened.length, 0);
+    assert.deepEqual(bridger.opened, [['https://e-gallery.bugstack.top/', '_blank', 'noopener,noreferrer']]);
   });
 
   for (const [sourcePath, expectedPath] of [
@@ -108,7 +124,7 @@ for (const host of ['e-hentai.org', 'exhentai.org']) {
       const sourceUrl = `https://${host}${sourcePath}`;
       const bridger = loadBridger(sourceUrl);
       assert.equal(bridger.button.disabled, false);
-      assert.equal(bridger.button.textContent, '在 Gallery Lens 中打开');
+      assert.equal(bridger.button['aria-label'], '在 Gallery Lens 中打开');
       bridger.button.dispatchEvent(new Event('click'));
       assert.equal(bridger.opened.length, 1);
       const [targetUrl, target, features] = bridger.opened[0];
@@ -182,11 +198,16 @@ test('clicking reads the current URL instead of the URL at injection time', () =
   assert.equal(targetUrl.searchParams.get('url'), bridger.window.location.href);
 });
 
-test('clicking after a URL change to the homepage or another origin cannot open a tab', () => {
-  for (const href of ['https://exhentai.org/', 'https://example.com/']) {
-    const bridger = loadBridger('https://exhentai.org/g/1/abc/');
-    bridger.window.location.href = href;
-    bridger.button.dispatchEvent(new Event('click'));
-    assert.equal(bridger.opened.length, 0);
-  }
+test('clicking after a URL change to the homepage opens the Gallery Lens homepage', () => {
+  const bridger = loadBridger('https://exhentai.org/g/1/abc/');
+  bridger.window.location.href = 'https://exhentai.org/';
+  bridger.button.dispatchEvent(new Event('click'));
+  assert.equal(bridger.opened[0][0], 'https://e-gallery.bugstack.top/');
+});
+
+test('clicking after a URL change to another origin cannot open a tab', () => {
+  const bridger = loadBridger('https://exhentai.org/g/1/abc/');
+  bridger.window.location.href = 'https://example.com/';
+  bridger.button.dispatchEvent(new Event('click'));
+  assert.equal(bridger.opened.length, 0);
 });

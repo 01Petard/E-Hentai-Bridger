@@ -1,9 +1,9 @@
 {
-  "name": "gallery-lens-bridger",
+  "name": "e-hentai-bridger",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Open E-Hentai and ExHentai pages in Gallery Lens",
+  "description": "A lightweight extension to enhance browsing on E-Hentai and ExHentai",
   "engines": {
     "node": ">=24",
     "pnpm": ">=10 <11"

@@ -5,7 +5,7 @@
 | 手头的文件 | 浏览器应加载的目录 |
 | --- | --- |
 | 完整源码项目 | 执行构建后生成的 `dist/` |
-| `gallery-lens-bridger-1.0.0.zip` | 解压后直接包含 `manifest.json` 的目录 |
+| `e-hentai-bridger-1.0.0.zip` | 解压后直接包含 `manifest.json` 的目录 |
 
 安装目录的完整结构如下：
 
@@ -27,7 +27,7 @@
 1. Chrome 打开 `chrome://extensions/`；Edge 打开 `edge://extensions/`。
 2. 开启「开发者模式」。
 3. 点击「加载已解压的扩展程序」或 Edge 的「加载解压缩的扩展」。
-4. 选择上述安装目录，确认列表中出现 **Gallery Lens Bridger 1.0.0**。
+4. 选择上述安装目录，确认列表中出现 **E-Hentai Bridger 1.0.0**。
 5. 刷新已经打开的源站页面。
 
 ### 从源码生成安装目录
@@ -43,13 +43,13 @@ pnpm run verify
 
 ### 从 ZIP 安装
 
-将发布包解压到固定目录，例如 `Extensions/gallery-lens-bridger/`，然后选择这个目录。不需要安装开发工具，也不需要复制 `src/`、`tests/`、`scripts/` 或 `node_modules/`。
+将发布包解压到固定目录，例如 `Extensions/e-hentai-bridger/`，然后选择这个目录。不需要安装开发工具，也不需要复制 `src/`、`tests/`、`scripts/` 或 `node_modules/`。
 
 ## 验证是否生效
 
-1. 打开 `https://e-hentai.org/` 或 `https://exhentai.org/`，右上角应显示禁用按钮。
+1. 打开 `https://e-hentai.org/` 或 `https://exhentai.org/`，点击右上角的项目图标按钮应打开 Gallery Lens 首页。
 2. 打开源站画廊或搜索页，按钮应可用。
-3. 点击「在 Gallery Lens 中打开」，应新增一个标签页，原源站页面保留。
+3. 点击图标按钮，应新增一个标签页，原源站页面保留。按钮默认半透明，悬停或用 Tab 聚焦时恢复不透明；悬停提示为「在新标签页中打开 Gallery Lens」。
 4. 打开其他站点，应没有此按钮。
 
 源站账号与 Gallery Lens 登录配置由各自站点管理，扩展不会复制登录状态。
@@ -58,12 +58,12 @@ pnpm run verify
 
 - **源码安装：**拉取或替换源码，执行 `pnpm install --frozen-lockfile` 和 `pnpm run verify`。
 - **ZIP 安装：**将新版运行文件替换到原固定安装目录。
-- 两种方式都需要在扩展管理页点击 Gallery Lens Bridger 的「重新加载」，再刷新源站页面。仅刷新源站不会更新已加载的扩展代码。
+- 两种方式都需要在扩展管理页点击 E-Hentai Bridger 的「重新加载」，再刷新源站页面。仅刷新源站不会更新已加载的扩展代码。
 - 如果安装目录发生移动，移除旧条目，重新从新目录加载。此前直接加载项目根目录的版本，同样改为加载 `dist/`。
 
 ## 常见问题
 
-**为什么首页按钮是灰色？** 两个纯首页按规则禁用。添加搜索条件后的首页可以跳转。
+**从首页会跳转到哪里？** 两个源站的纯首页直接打开 Gallery Lens 首页，不添加 `url` 参数；带搜索条件的首页会完整传递源站 URL。
 
 **为什么看不到按钮？** 先检查扩展已启用、网址是两个精确 HTTPS 域名，再刷新网页。HTTP、子域名、其他端口和 iframe 均不支持。浏览器若被手动限制了扩展的站点访问权限，请在扩展详情中检查这两个域名的访问设置。
 

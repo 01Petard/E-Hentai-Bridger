@@ -2,30 +2,30 @@
 
 验证日期：2026-10-18。环境：macOS arm64、Node.js 24.11.0、pnpm 10.34.6。
 
-本轮按 FocusMask 的源码、安装目录和发布包分层方式整理工程，并为扩展接入图标。图标源文件为 `src/assets/icon.svg`，延续 Gallery Lens 的配色与 E 字形，加入桥形；构建自动生成四种尺寸的 PNG，跳转规则保持不变。
+本轮按 FocusMask 的源码、安装目录和发布包分层方式整理工程，并为扩展接入图标。图标源文件为 `src/assets/icon.svg`，延续 Gallery Lens 的配色与 E 字形，加入桥形；构建自动生成四种尺寸的 PNG。两个源站纯首页现在直接打开 Gallery Lens 首页，快捷按钮使用 36×36px 项目图标，默认半透明，悬停或键盘聚焦时恢复不透明，并保留完整用途提示。
 
 ## 已验证
 
 | 检查 | 结果 |
 | --- | --- |
 | `pnpm install --frozen-lockfile --offline` | 通过，锁文件与依赖一致 |
-| `pnpm run verify` / `pnpm run package` | 通过：语法检查、46 项 Node 测试、构建、发布目录校验 |
+| `pnpm run verify` / `pnpm run package` | 通过：语法检查、49 项 Node 测试、构建、发布目录校验 |
 | `dev` 文件监听 | 在独立源码副本中验证首次构建、修改 SVG 后自动重新生成 PNG、停止进程 |
-| Playwright 配套 Chromium 156.0.8078.4 | 加载实际 `dist/`，14 项浏览器检查通过 |
-| Microsoft Edge 155.0.4283.60 | 加载实际 `dist/`，14 项浏览器检查通过 |
+| Playwright 配套 Chromium 156.0.8078.4 | 加载实际 `dist/`，15 项浏览器检查通过 |
+| Microsoft Edge 155.0.4283.60 | 加载实际 `dist/`，15 项浏览器检查通过 |
 | ZIP 解压比对 | 使用 Python 标准库独立检查，6 个文件与 `dist/` 逐字节一致 |
 
-Node 测试覆盖跳转与禁用规则、站点限制、当前地址读取、重复注入、清理构建、非项目工作目录运行脚本、过期产物与多余文件拒绝、权限及版本变化检查、版本化 ZIP 内容，以及四种 PNG 的格式、尺寸、透明通道、缺失图标和错误尺寸拒绝。
+Node 测试覆盖主页、查询页与画廊页跳转规则、站点限制、当前地址读取、重复注入、清理构建、非项目工作目录运行脚本、过期产物与多余文件拒绝、权限及版本变化检查、版本化 ZIP 内容，以及四种 PNG 的格式、尺寸、透明通道、缺失图标和错误尺寸拒绝。
 
-浏览器检查覆盖真实扩展注入、外部网页 CSS 下的样式隔离、右上角 16px 定位、Tab/Enter/空格操作、新标签页路径、URL 完整还原、原标签页保留、无 opener/referrer、首页禁用、非允许站点不注入，以及扩展图标资源在浏览器中的加载与解码。测试使用独立临时浏览器配置，结束后自动清理；不修改发布 Manifest。
+浏览器检查覆盖真实扩展注入、外部网页 CSS 下的样式隔离、右上角 16px 定位、36×36px 图标按钮、按钮中的真实图标加载与解码、默认 50% 透明度、悬停和键盘聚焦时不透明、Tab/Enter/空格操作、新标签页路径、URL 完整还原、原标签页保留、无 opener/referrer、首页直达及非允许站点不注入。图标资源仅向两个源站开放。测试使用独立临时浏览器配置，结束后自动清理；不修改发布 Manifest。
 
 ## 安装产物
 
 - 本地安装：`dist/`，包含 `manifest.json`、`content.js` 和 `icons/` 中的 16、32、48、128px PNG。
-- 发布包：`release/gallery-lens-bridger-1.0.0.zip`，7,034 字节；ZIP 包含六个运行文件。
-- SHA-256：`b6f7bee48f5b2c9fc5eeed2329a1c67427af55910ec0cceda0a259ff77246cfb`。
+- 发布包：`release/e-hentai-bridger-1.0.0.zip`，7,050 字节；ZIP 包含六个运行文件。
+- SHA-256：`b7aa8a33fed4e11f181672a77643a86c13d51014f80895f33b9b9d509dd5d852`。
 
-浏览器结果位于 `output/playwright/results-chromium.json` 和 `results-edge.json`，截图位于同目录的 `button-chromium.png`、`button-edge.png`；文件监听检查结果位于 `output/dev-watch.json`。这些记录不进入安装目录或 ZIP。
+浏览器结果位于 `output/playwright/results-chromium.json` 和 `results-edge.json`，截图位于同目录的 `button-chromium.png`、`button-edge.png` 及 `button-idle-<标签>.png`；文件监听检查结果位于 `output/dev-watch.json`。这些记录不进入安装目录或 ZIP。
 
 ## 验证边界
 
