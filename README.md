@@ -11,7 +11,7 @@
   </p>
   <p>
     <a href="https://github.com/01Petard/E-Hentai-Bridger">GitHub</a> ·
-    <a href="https://github.com/01Petard/E-Hentai-Fetcher">Gallery Lens（联动工具）</a>
+    <a href="https://github.com/01Petard/E-Hentai-Fetcher">关联项目</a>
   </p>
 </div>
 
