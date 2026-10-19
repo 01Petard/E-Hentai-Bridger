@@ -92,7 +92,7 @@ E-hentai Bridger/
 │   ├── content/index.js       # 地址判断、按钮、跳转
 │   ├── content/results.js     # Extended 识别、布局与偏好
 │   ├── content/results.css    # 限定在增强结果和控件内的样式
-│   └── assets/icon.svg        # E 字形与桥形扩展图标
+│   └── assets/icon.svg        # E 字形与链环扩展图标
 ├── public/manifest.json       # 扩展名称、版本与站点匹配配置
 ├── scripts/
 │   ├── build.mjs              # 清理构建、监听源码变更
