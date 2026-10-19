@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "E-Hentai Bridger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "增强 E-Hentai / ExHentai 的浏览体验，提供轻量的页面增强与快捷操作。",
   "permissions": ["storage"],
   "icons": {
