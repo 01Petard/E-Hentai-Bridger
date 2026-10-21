@@ -21,7 +21,9 @@ E-Hentai Bridger 围绕 E-Hentai / ExHentai 的实际使用场景，为源站页
 
 目前提供 Extended 查询结果浏览增强和 Gallery Lens 快捷跳转，两项功能独立工作。
 
-## 当前功能：Extended 结果浏览增强
+## 当前功能
+
+### Extended 结果浏览增强
 
 - 根据 `table.itg.glte` 及结果行结构识别页面，适用于搜索、标签、上传者及其他路径，首页存在相同结果结构时也会生效。
 - 每次打开页面都从紧凑封面网格开始，标题位于封面上方，分类、评分、时间和页数排列在下方；网格不显示标签和上传者。
@@ -31,9 +33,9 @@ E-Hentai Bridger 围绕 E-Hentai / ExHentai 的实际使用场景，为源站页
 
 控件优先放在搜索区右侧、原站显示模式下拉框上方，不占用结果区域的独立整行；右侧空间不足时，收为分页上方的紧凑一行。
 
-仅增强 Extended 结果，不自动切换源站显示模式；无结果或无法识别的结构保持原样。首版在完整页面加载时初始化。
+仅增强 Extended 结果，不自动切换源站显示模式；无结果或无法识别的结构保持原样。首版在完整页面加载时初始化
 
-## 当前功能：Gallery Lens 快捷入口
+### Gallery Lens 快捷入口
 
 - 在 E-Hentai / ExHentai 页面右上角显示项目图标快捷按钮。
 - 画廊页跳转到 Gallery Lens 详情页，其他页面传入 Gallery Lens 首页。
@@ -42,11 +44,15 @@ E-Hentai Bridger 围绕 E-Hentai / ExHentai 的实际使用场景，为源站页
 
 当前版本 **1.0.0**。快捷入口的目标实例为 [Gallery Lens](https://e-gallery.bugstack.top/)。
 
+![image-20261021185056150](https://cdn.jsdelivr.net/gh/01Petard/imageURL@main/img/202610211850351.png)
+
+![Snipaste_2026-10-21_18-50-24](https://cdn.jsdelivr.net/gh/01Petard/imageURL@main/img/202610211851421.png)
+
 ## 安装与更新
 
 ### 直接安装发布包
 
-1. 获取 `release/e-hentai-bridger-1.0.0.zip`，解压到一个长期保留的目录。
+1. 获取 `release/e-hentai-bridger-<最新版>.zip`，解压到一个长期保留的目录。
 2. 打开 `chrome://extensions/` 或 `edge://extensions/`，开启「开发者模式」。
 3. 选择「加载已解压的扩展」，加载**解压后直接包含 `manifest.json` 的目录**。
 4. 刷新已打开的 E-Hentai / ExHentai 页面。
@@ -107,7 +113,7 @@ E-hentai Bridger/
 │   ├── INSTALL.md             # 安装、更新、卸载与排错
 │   ├── DEVELOPMENT.md         # 环境、命令与开发流程
 │   └── verification.md        # 验证结果与边界
-├── dist/                     # 构建生成；浏览器加载此目录
+├── dist/                      # 构建生成；浏览器加载此目录
 │   ├── manifest.json
 │   ├── content.js
 │   ├── results.js
